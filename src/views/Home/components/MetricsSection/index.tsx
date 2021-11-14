@@ -40,13 +40,13 @@ const Stats = () => {
     <Flex justifyContent="center" alignItems="center" flexDirection="column">
       <GradientLogo height="48px" width="48px" mb="24px" />
       <Heading textAlign="center" scale="xl">
-        {t('Used by millions.')}
+        {t('Bringing utility to Memes everywhere.')}
       </Heading>
       <Heading textAlign="center" scale="xl" mb="32px">
-        {t('Trusted with billions.')}
+        {t('Trusted and secured.')}
       </Heading>
       <Text textAlign="center" color="textSubtle">
-        {t('PancakeSwap has the most users of any decentralized platform, ever.')}
+        {t('Kibaswap supports both Binance Smart Chain and Ethereum Networks, for maximum optimization.')}
       </Text>
       <Flex flexWrap="wrap">
         <Text display="inline" textAlign="center" color="textSubtle" mb="20px">
