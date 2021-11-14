@@ -15,6 +15,7 @@ const { wbnb: WBNB } = tokens
 export default function useBUSDPrice(currency?: Currency): Price | undefined {
   const { chainId } = useActiveWeb3React()
   const wrapped = wrappedCurrency(currency, chainId)
+  console.log(chainId, wrapped)
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
       [chainId && wrapped && currencyEquals(WBNB, wrapped) ? undefined : currency, chainId ? WBNB : undefined],
@@ -23,6 +24,8 @@ export default function useBUSDPrice(currency?: Currency): Price | undefined {
     ],
     [chainId, currency, wrapped],
   )
+
+  console.log(tokenPairs)
   const [[ethPairState, ethPair], [busdPairState, busdPair], [busdEthPairState, busdEthPair]] = usePairs(tokenPairs)
 
   return useMemo(() => {
