@@ -1,15 +1,74 @@
-import React from 'react'
-import { Currency, Pair } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex } from '@pancakeswap/uikit'
+import React,  { useCallback, useState }  from 'react'
+import { Currency, Pair, Token } from '@pancakeswap/sdk'
+import { Button, ChevronDownIcon, Text, useModal, Flex, MetamaskIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from 'contexts/Localization'
+import getTokenLogoURL from 'utils/getTokenLogoURL'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
-
-import { RowBetween } from '../Layout/Row'
+import { RowBetween, RowFixed } from '../Layout/Row'
 import { Input as NumericalInput } from './NumericalInput'
+import Popover, { PopoverProps } from './Popover'
+
+interface TooltipProps extends Omit<PopoverProps, 'content'> {
+  text: React.ReactNode
+}
+
+interface TooltipContentProps extends Omit<PopoverProps, 'content'> {
+  content: React.ReactNode
+}
+
+export function useAddTokenToMetamask(currencyToAdd: Currency | undefined): {
+  addToken: () => void
+  success: boolean | undefined,
+  isMetaMask: boolean | undefined
+} {
+  const { library } = useActiveWeb3React()
+
+  const token: any | undefined = (currencyToAdd as any)
+
+  const [success, setSuccess] = useState<boolean | undefined>()
+  const isMetaMask = React.useMemo(() => library && library?.provider && library?.provider?.isMetaMask, [library]);
+  const addToken = useCallback(() => {
+    console.log(library.provider, token, token?.currency)
+    if (library && library.provider &&  library.provider?.isMetaMask && library.provider.request && token) {
+      library.provider
+        .request({
+          method: 'wallet_watchAsset',
+          params: {
+            // @ts-ignore // need this for incorrect ethers provider type
+            type: 'ERC20',
+            options: {
+              address: token.address,
+              symbol: token.symbol,
+              decimals: token.decimals,
+              image: token.symbol === 'KIBA' ? 'https://assets.coingecko.com/coins/images/19525/large/2021-11-13-18-11-18-removebg-preview.png?1636989110' : getTokenLogoURL(token?.address),
+            },
+          },
+        })
+        .then((s) => {
+          setSuccess(s)
+        })
+        .catch(() => setSuccess(false))
+    } else {
+      setSuccess(false)
+    }
+  }, [library, token])
+
+  return { addToken, success, isMetaMask }
+}
+
+export function Tooltip({ text, ...rest }: TooltipProps) {
+  return <Popover show={rest.show} content={<>{text}</>} {...rest} />
+}
+
+const StyledLogo = styled.img`
+  height: 16px;
+  width: 16px;
+  margin-left: 6px;
+`
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -78,7 +137,9 @@ export default function CurrencyInputPanel({
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
   const translatedLabel = label || t('Input')
-
+  const [showMetaTip, setShowMetaTip] = React.useState(false)
+  const { addToken, isMetaMask } = useAddTokenToMetamask(currency)
+  
   const [onPresentCurrencyModal] = useModal(
     <CurrencySearchModal
       onCurrencySelect={onCurrencySelect}
@@ -144,15 +205,27 @@ export default function CurrencyInputPanel({
                 <Text id="pair">
                   {(currency && currency.symbol && currency.symbol.length > 20
                     ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                        currency.symbol.length - 5,
-                        currency.symbol.length,
-                      )}`
+                      currency.symbol.length - 5,
+                      currency.symbol.length,
+                    )}`
                     : currency?.symbol) || t('Select a currency')}
                 </Text>
               )}
               {!disableCurrencySelect && <ChevronDownIcon />}
             </Flex>
           </CurrencySelectButton>
+          {currency && currency?.symbol !== "BNB" && isMetaMask && <RowFixed>
+            <Tooltip placement='top'
+              show={showMetaTip}
+              text={`Add ${currency?.name} (${currency?.symbol}) to Metamask`}>
+              <MetamaskIcon
+                onClick={() => addToken()}
+                style={{ cursor: 'pointer' }}
+                onMouseEnter={() => setShowMetaTip(true)}
+                onMouseLeave={() => setShowMetaTip(false)}
+              />
+            </Tooltip>
+          </RowFixed>}
         </InputRow>
       </Container>
     </InputPanel>

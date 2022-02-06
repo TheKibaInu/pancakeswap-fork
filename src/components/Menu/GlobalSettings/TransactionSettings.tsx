@@ -53,8 +53,10 @@ const SlippageTabs = () => {
 
       try {
         const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
-        if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
+        if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat <= 9999) {
           setUserSlippageTolerance(valueAsIntFromRoundedFloat)
+        } else if (valueAsIntFromRoundedFloat > 9999) {
+          setUserSlippageTolerance(9999)
         }
       } catch (error) {
         console.error(error)

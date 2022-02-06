@@ -25,7 +25,7 @@ export default function CurrencyLogo({
 
   const srcs: string[] = useMemo(() => {
     if (currency === ETHER) return []
-
+    if (currency?.name === "Kiba Inu") return ['https://assets.coingecko.com/coins/images/19525/large/2021-11-13-18-11-18-removebg-preview.png?1636989110']
     if (currency instanceof Token) {
       if (currency instanceof WrappedTokenInfo) {
         return [...uriLocations, getTokenLogoURL(currency.address)]

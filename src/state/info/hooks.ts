@@ -213,6 +213,8 @@ export const useTokenData = (address: string | undefined): TokenData | undefined
     addNewTokenKeys([address])
   }
 
+  console.log(allTokenData)
+
   return allTokenData[address]?.data
 }
 

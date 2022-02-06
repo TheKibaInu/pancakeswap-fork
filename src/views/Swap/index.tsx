@@ -21,7 +21,7 @@ import ImportTokenWarningModal from './components/ImportTokenWarningModal'
 import ProgressSteps from './components/ProgressSteps'
 import { AppHeader, AppBody } from '../../components/App'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
-
+import kiba from '../../assets/kiba.jpeg'
 import { INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
 import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 import { useCurrency, useAllTokens } from '../../hooks/Tokens'
@@ -62,7 +62,7 @@ export default function Swap({ history }: RouteComponentProps) {
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
     [loadedInputCurrency, loadedOutputCurrency],
   )
-
+  console.log(urlLoadedTokens, loadedUrlParams)
   // dismiss warning if all imported tokens are in active lists
   const defaultTokens = useAllTokens()
   const importTokensNotInDefault =
@@ -300,10 +300,10 @@ export default function Swap({ history }: RouteComponentProps) {
     'confirmSwapModal',
   )
   return (
-    <Page style={{ background: 'radial-gradient(rgb(239, 146, 56), rgba(129, 3, 3, 0.95))' }}>
+    <Page style={{ background: `#222`,backgroundPosition:'center center', }}>
       <AppBody>
         <AppHeader title={t('KibaSwap (BSC)')} subtitle={t('Trade Kiba in an instant')} />
-        <Wrapper style={{ background: '#222' }} id="swap-page">
+        <Wrapper id="swap-page">
           <AutoColumn gap="md">
             <CurrencyInputPanel
               label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}

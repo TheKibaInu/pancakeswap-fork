@@ -189,6 +189,8 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
 export function useCurrency(currencyId: string | undefined): Currency | null | undefined {
   const isBNB = currencyId?.toUpperCase() === 'BNB'
-  const token = useToken(isBNB ? undefined : currencyId)
-  return isBNB ? ETHER : token
+  const isKiba = currencyId?.toLowerCase () === '0x31d3778a7ac0d98c4aaa347d8b6eaf7977448341'.toLowerCase()
+  const token = useToken(isBNB || isKiba ? undefined : currencyId)
+  return isBNB ? ETHER 
+          : isKiba ? new Token(56, '0x31d3778a7ac0d98c4aaa347d8b6eaf7977448341', 9, 'KIBA', 'Kiba Inu', 'https://kibainu.space') :  token
 }
