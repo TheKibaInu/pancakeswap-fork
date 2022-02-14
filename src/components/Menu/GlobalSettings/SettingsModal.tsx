@@ -59,7 +59,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   return (
     <Modal
       title={t('Settings')}
-      headerBackground="gradients.cardHeader"
+      headerBackground='#FFFFFF'
       onDismiss={onDismiss}
       style={{ maxWidth: '420px' }}
     >
