@@ -17,6 +17,7 @@ const StyledToast = styled.div`
   max-width: calc(100% - 32px);
   transition: all 250ms ease-in;
   width: 100%;
+  border-radius: 10px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     max-width: 400px;

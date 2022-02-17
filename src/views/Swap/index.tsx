@@ -41,12 +41,60 @@ import { computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 import CircleLoader from '../../components/Loader/CircleLoader'
 import Page from '../Page'
 import SwapWarningModal from './components/SwapWarningModal'
+import { ReactComponent as Arrows } from '../../assets/svg/arrows.svg'
+
 
 const Label = styled(Text)`
-  font-size: 12px;
+  font-family: Open Sans;
+  font-size: 14px;
   font-weight: bold;
-  color: ${({ theme }) => theme.colors.secondary};
+  color: #FFFFFF;
 `
+type ButtonAndyProps = { andy: string };
+const ButtonAndy = styled(Button)<ButtonAndyProps>`
+font-weight:600;
+background-color: #F76C1D;
+color: #FFFFFF;
+font-family: Inter;
+font-size: 20px;
+border-radius: 10px;
+padding: 16px;
+letter-spacing: 0em;
+
+
+&:hover {
+  border: 1px solid #F76C1D;
+}
+&:active {
+  background-color: #F76C1D;
+}
+&:disabled {
+  background-color: #4F4F62;
+}
+`;
+
+type ButtonAndyPropsSmall = { andy: string };
+const ButtonAndySmall = styled(Button)<ButtonAndyProps>`
+font-weight: 600;
+background-color: #F76C1D;
+color: #FFFFFF;
+font-family: Inter;
+font-size: 16px;
+border-radius: 8px;
+padding: 16px;
+letter-spacing: 0em;
+
+
+&:hover {
+  border: 1px solid #F76C1D;
+}
+&:active {
+  background-color: #F76C1D;
+}
+&:disabled {
+  background-color: #4F4F62;
+}
+`;
 
 export default function Swap({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
@@ -300,9 +348,9 @@ export default function Swap({ history }: RouteComponentProps) {
     'confirmSwapModal',
   )
   return (
-    <Page style={{ background: `#222`,backgroundPosition:'center center', }}>
+    <Page style={{ background: `#252632`,backgroundPosition:'center center', }}>
       <AppBody>
-        <AppHeader title={t('KibaSwap (BSC)')} subtitle={t('Trade Kiba in an instant')} />
+      <AppHeader title={t(' ')} subtitle={t(' ')} />
         <Wrapper id="swap-page">
           <AutoColumn gap="md">
             <CurrencyInputPanel
@@ -319,8 +367,7 @@ export default function Swap({ history }: RouteComponentProps) {
             <AutoColumn justify="space-between">
               <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                 <ArrowWrapper clickable>
-                  <ArrowDownIcon
-                    width="16px"
+                  <Arrows style={{ height: 16, width: 16}}fill= 'white'
                     onClick={() => {
                       setApprovalSubmitted(false) // reset 2 step UI for approvals
                       onSwitchTokens()
@@ -329,9 +376,9 @@ export default function Swap({ history }: RouteComponentProps) {
                   />
                 </ArrowWrapper>
                 {recipient === null && !showWrap && isExpertMode ? (
-                  <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
+                  <ButtonAndy variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                     {t('+ Add a send (optional)')}
-                  </Button>
+                  </ButtonAndy>
                 ) : null}
               </AutoRow>
             </AutoColumn>
@@ -352,9 +399,9 @@ export default function Swap({ history }: RouteComponentProps) {
                   <ArrowWrapper clickable={false}>
                     <ArrowDownIcon width="16px" />
                   </ArrowWrapper>
-                  <Button variant="text" id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
+                  <ButtonAndy variant="text" id="remove-recipient-button" onClick={() => onChangeRecipient(null)}>
                     {t('- Remove send')}
-                  </Button>
+                  </ButtonAndy>
                 </AutoRow>
                 <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
               </>
@@ -385,30 +432,30 @@ export default function Swap({ history }: RouteComponentProps) {
           </AutoColumn>
           <Box mt="1rem">
             {swapIsUnsupported ? (
-              <Button width="100%" disabled mb="4px">
+              <ButtonAndy width="100%" disabled mb="4px">
                 {t('Unsupported Asset')}
-              </Button>
+              </ButtonAndy>
             ) : !account ? (
               <ConnectWalletButton width="100%" />
             ) : showWrap ? (
-              <Button width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
+              <ButtonAndy width="100%" disabled={Boolean(wrapInputError)} onClick={onWrap}>
                 {wrapInputError ??
                   (wrapType === WrapType.WRAP ? t('Wrap') : wrapType === WrapType.UNWRAP ? t('Unwrap') : null)}
-              </Button>
+              </ButtonAndy>
             ) : noRoute && userHasSpecifiedInputOutput ? (
               <GreyCard style={{ textAlign: 'center' }}>
                 <Text color="textSubtle" mb="4px">
                   {t('Insufficient liquidity for this trade.')}
                 </Text>
                 {singleHopOnly && (
-                  <Text color="textSubtle" mb="4px">
+                  <Text color="textSubtle" mb="4rpx">
                     {t('Try enabling multi-hop trades.')}
                   </Text>
                 )}
               </GreyCard>
             ) : showApproveFlow ? (
               <RowBetween>
-                <Button
+                <ButtonAndySmall
                   variant={approval === ApprovalState.APPROVED ? 'success' : 'primary'}
                   onClick={approveCallback}
                   disabled={approval !== ApprovalState.NOT_APPROVED || approvalSubmitted}
@@ -423,8 +470,8 @@ export default function Swap({ history }: RouteComponentProps) {
                   ) : (
                     t('Enable %asset%', { asset: currencies[Field.INPUT]?.symbol ?? '' })
                   )}
-                </Button>
-                <Button
+                </ButtonAndySmall>
+                <ButtonAndySmall
                   variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
                   onClick={() => {
                     if (isExpertMode) {
@@ -450,10 +497,10 @@ export default function Swap({ history }: RouteComponentProps) {
                     : priceImpactSeverity > 2
                       ? t('Swap Anyway')
                       : t('Swap')}
-                </Button>
+                </ButtonAndySmall>
               </RowBetween>
             ) : (
-              <Button
+              <ButtonAndy
                 variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
                 onClick={() => {
                   if (isExpertMode) {
@@ -478,7 +525,7 @@ export default function Swap({ history }: RouteComponentProps) {
                     : priceImpactSeverity > 2
                       ? t('Swap Anyway')
                       : t('Swap'))}
-              </Button>
+              </ButtonAndy>
             )}
             {showApproveFlow && (
               <Column style={{ marginTop: '1rem' }}>

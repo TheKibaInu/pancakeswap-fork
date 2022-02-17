@@ -11,6 +11,21 @@ import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import { Input as NumericalInput } from './NumericalInput'
 import Popover, { PopoverProps } from './Popover'
+import { ReactComponent as Down } from '../../assets/svg/down-chevron.svg'
+
+type ButtonMaxProps = { andy: string };
+const ButtonAndyMax = styled(Button)<ButtonMaxProps>`
+font-weight: 700;
+color: #F76C1D;
+font-family: Inter;
+border-radius: 10px;
+border: 1px solid #F76C1D;
+letter-spacing: 0em;
+font-size: 14px;
+
+
+`;
+
 
 interface TooltipProps extends Omit<PopoverProps, 'content'> {
   text: React.ReactNode
@@ -72,9 +87,12 @@ const StyledLogo = styled.img`
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
+  color: #FFFFFF;
+  background: #30313D;
   flex-flow: row nowrap;
   align-items: center;
-  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
+  border-radius: 5px;
+  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 1.5rem 1rem' : '0.75rem 0.75rem 1.5rem 1rem')};
 `
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0 0.5rem;
@@ -83,7 +101,6 @@ const LabelRow = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  color: ${({ theme }) => theme.colors.text};
   font-size: 0.75rem;
   line-height: 1rem;
   padding: 0.75rem 1rem 0 1rem;
@@ -93,14 +110,15 @@ const InputPanel = styled.div<{ hideInput?: boolean }>`
   flex-flow: column nowrap;
   position: relative;
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ##30313D;
   z-index: 1;
 `
 const Container = styled.div<{ hideInput: boolean }>`
-  border-radius: 16px;
-  background-color: ${({ theme }) => theme.colors.input};
-  box-shadow: ${({ theme }) => theme.shadows.inset};
+  border-radius: 5px;
+  background-color: #30313D;
+  
 `
+
 interface CurrencyInputPanelProps {
   value: string
   onUserInput: (value: string) => void
@@ -154,9 +172,9 @@ export default function CurrencyInputPanel({
         {!hideInput && (
           <LabelRow>
             <RowBetween>
-              <Text fontSize="14px">{translatedLabel}</Text>
+              
               {account && (
-                <Text onClick={onMax} fontSize="14px" style={{ display: 'inline', cursor: 'pointer' }}>
+                <Text onClick={onMax} fontSize="14px" style={{ display: 'inline', cursor: 'pointer', color: '#FFFFFF' }}>
                   {!hideBalance && !!currency
                     ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
                     : ' -'}
@@ -165,24 +183,10 @@ export default function CurrencyInputPanel({
             </RowBetween>
           </LabelRow>
         )}
-        <InputRow style={hideInput ? { padding: '0', borderRadius: '8px' } : {}} selected={disableCurrencySelect}>
+        <InputRow style={hideInput ? { padding: '0', borderRadius: '12px' } : {}} selected={disableCurrencySelect}>
           {!hideInput && (
             <>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={(val) => {
-                  onUserInput(val)
-                }}
-              />
-              {account && currency && showMaxButton && label !== 'To' && (
-                <Button onClick={onMax} scale="sm" variant="text">
-                  MAX
-                </Button>
-              )}
-            </>
-          )}
-          <CurrencySelectButton
+              <CurrencySelectButton
             selected={!!currency}
             className="open-currency-select-button"
             onClick={() => {
@@ -193,16 +197,16 @@ export default function CurrencyInputPanel({
           >
             <Flex alignItems="center" justifyContent="space-between">
               {pair ? (
-                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={20} margin />
               ) : currency ? (
-                <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                <CurrencyLogo currency={currency} size="30px" style={{ marginRight: '12px' }} />
               ) : null}
               {pair ? (
-                <Text id="pair">
+                <Text style={{color: "#FFFFFF", fontFamily: 'Archivo Narrow', fontWeight: 700, fontSize: 20}} id="pair">
                   {pair?.token0.symbol}:{pair?.token1.symbol}
                 </Text>
               ) : (
-                <Text id="pair">
+                <Text style={{color: "#FFFFFF", fontFamily: 'Archivo Narrow', fontWeight: 700, fontSize: 20}} id="pair">
                   {(currency && currency.symbol && currency.symbol.length > 20
                     ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
                       currency.symbol.length - 5,
@@ -211,9 +215,26 @@ export default function CurrencyInputPanel({
                     : currency?.symbol) || t('Select a currency')}
                 </Text>
               )}
-              {!disableCurrencySelect && <ChevronDownIcon />}
+              {!disableCurrencySelect && <Down style={{ height: 24, width: 14, marginLeft: 10 }}fill= 'white'/>}
             </Flex>
           </CurrencySelectButton>
+              <NumericalInput
+                fontSize='18px'
+                align='right'
+                className="token-amount-input"
+                value={value}
+                onUserInput={(val) => {
+                  onUserInput(val)
+                }}
+              />
+              {account && currency && showMaxButton && label !== 'To' && (
+                <ButtonAndyMax onClick={onMax} scale="sm" variant="text">
+                  MAX
+                </ButtonAndyMax>
+              )}
+            </>
+          )}
+        
           {currency && currency?.symbol !== "BNB" && isMetaMask && <RowFixed>
             <Tooltip placement='top'
               show={showMetaTip}
