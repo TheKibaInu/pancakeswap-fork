@@ -29,3 +29,26 @@ export function RedirectToSwap(props: RouteComponentProps<{ outputCurrency: stri
     />
   )
 }
+
+export function RedirectToSwapframe(props: RouteComponentProps<{ outputCurrency: string }>) {
+  const {
+    location,
+    location: { search },
+    match: {
+      params: { outputCurrency },
+    },
+  } = props
+
+  return (
+    <Redirect
+      to={{
+        ...location,
+        pathname: '/swapframe',
+        search:
+          search && search.length > 1
+            ? `${search}&outputCurrency=${outputCurrency}`
+            : `?outputCurrency=${outputCurrency}`,
+      }}
+    />
+  )
+}
