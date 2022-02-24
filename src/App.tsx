@@ -4,6 +4,7 @@ import { ResetCSS } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
 import useEagerConnect from 'hooks/useEagerConnect'
+import Swapframe from 'views/Swapframe'
 import useUserAgent from 'hooks/useUserAgent'
 import useScrollOnRouteChange from 'hooks/useScrollOnRouteChange'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -28,7 +29,7 @@ import {
   RedirectToAddLiquidity,
 } from './views/AddLiquidity/redirects'
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
-import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
+import { RedirectPathToSwapOnly, RedirectToSwap, RedirectToSwapframe } from './views/Swap/redirects'
 
 
 // Route-based code splitting
@@ -143,6 +144,8 @@ const App: React.FC = () => {
           {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
           <Route exact strict path="/swap" component={Swap} />
           <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
+          <Route exact strict path="/swapframe" component={Swapframe} />
+          <Route exact strict path="/swapframe/:outputCurrency" component={RedirectToSwapframe} />
           <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
           <Route exact strict path="/find" component={PoolFinder} />
           <Route exact strict path="/liquidity" component={Liquidity} />
