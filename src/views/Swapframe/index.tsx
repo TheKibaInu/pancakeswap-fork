@@ -346,7 +346,7 @@ export default function Swapframe({ history }: RouteComponentProps) {
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
   const [onPresentImportTokenWarningModal] = useModal(
-    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swap/')} />,
+    <ImportTokenWarningModal tokens={importTokensNotInDefault} onCancel={() => history.push('/swapframe')} />,
   )
 
   useEffect(() => {

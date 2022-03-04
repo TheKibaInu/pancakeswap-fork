@@ -54,7 +54,6 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
     const symbolSubstrings: Token[] = []
     const rest: Token[] = []
 
-    const kiba = new Token(56, '0x31d3778a7ac0d98c4aaa347d8b6eaf7977448341', 9, 'KIBA', 'Kiba Inu', 'https://kibainu.space');
 
     // sort tokens by exact match -> substring on symbol match -> rest
     tokens.map((token) => {
@@ -67,6 +66,6 @@ export function useSortedTokensByQuery(tokens: Token[] | undefined, searchQuery:
       return rest.push(token)
     })
 
-    return [kiba, ...exactMatches, ...symbolSubstrings, ...rest]
+    return [ ...exactMatches, ...symbolSubstrings, ...rest]
   }, [tokens, searchQuery])
 }
