@@ -1,35 +1,38 @@
-import { createReducer } from '@reduxjs/toolkit'
-import { SerializedToken } from 'config/constants/types'
+/* eslint-disable */
 import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
-import { updateVersion } from '../global/actions'
 import {
+  FarmStakedOnly,
+  SerializedPair,
+  ViewMode,
   addSerializedPair,
   addSerializedToken,
   addWatchlistPool,
   addWatchlistToken,
-  FarmStakedOnly,
+  muteAudio,
   removeSerializedPair,
   removeSerializedToken,
-  SerializedPair,
-  muteAudio,
   toggleTheme,
   unmuteAudio,
   updateGasPrice,
+  updateUserAutoSlippage,
   updateUserDeadline,
   updateUserExpertMode,
+  updateUserExpertModeAcknowledgementShow,
   updateUserFarmStakedOnly,
   updateUserFarmsViewMode,
   updateUserPoolStakedOnly,
   updateUserPoolsViewMode,
-  updateUserSingleHopOnly,
-  updateUserSlippageTolerance,
-  ViewMode,
   updateUserPredictionAcceptedRisk,
   updateUserPredictionChartDisclaimerShow,
+  updateUserSingleHopOnly,
+  updateUserSlippageTolerance,
   updateUserUsernameVisibility,
-  updateUserExpertModeAcknowledgementShow,
 } from './actions'
+
 import { GAS_PRICE_GWEI } from './hooks/helpers'
+import { SerializedToken } from 'config/constants/types'
+import { createReducer } from '@reduxjs/toolkit'
+import { updateVersion } from '../global/actions'
 
 const currentTimestamp = () => new Date().getTime()
 
@@ -45,6 +48,8 @@ export interface UserState {
   // user defined slippage tolerance in bips, used in all txns
   userSlippageTolerance: number
 
+  // auto calculate the slippage based on tokens traded / tax
+  useAutoSlippage: boolean
   // deadline set by user in minutes, used in all txns
   userDeadline: number
 
@@ -84,6 +89,7 @@ function pairKey(token0Address: string, token1Address: string) {
 export const initialState: UserState = {
   userExpertMode: false,
   userSingleHopOnly: false,
+  useAutoSlippage: false,
   userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
   tokens: {},
@@ -124,6 +130,9 @@ export default createReducer(initialState, (builder) =>
     .addCase(updateUserExpertMode, (state, action) => {
       state.userExpertMode = action.payload.userExpertMode
       state.timestamp = currentTimestamp()
+    })
+    .addCase(updateUserAutoSlippage, (state, action) => {
+      state.useAutoSlippage = action.payload.useAutoSlippage;
     })
     .addCase(updateUserSlippageTolerance, (state, action) => {
       state.userSlippageTolerance = action.payload.userSlippageTolerance

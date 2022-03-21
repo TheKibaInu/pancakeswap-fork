@@ -1,38 +1,41 @@
-import { ChainId, Pair, Token } from '@pancakeswap/sdk'
-import flatMap from 'lodash/flatMap'
-import { useCallback, useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useAllTokens } from 'hooks/Tokens'
+/* eslint-disable */
 import { AppDispatch, AppState } from '../../index'
+import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
+import { ChainId, Pair, Token } from '@pancakeswap/sdk'
 import {
+  FarmStakedOnly,
+  SerializedPair,
+  ViewMode,
   addSerializedPair,
   addSerializedToken,
-  FarmStakedOnly,
+  addWatchlistPool,
+  addWatchlistToken,
   muteAudio,
   removeSerializedToken,
-  SerializedPair,
   toggleTheme as toggleThemeAction,
   unmuteAudio,
+  updateGasPrice,
+  updateUserAutoSlippage,
   updateUserDeadline,
   updateUserExpertMode,
+  updateUserExpertModeAcknowledgementShow,
   updateUserFarmStakedOnly,
-  updateUserSingleHopOnly,
-  updateUserSlippageTolerance,
-  updateGasPrice,
-  addWatchlistToken,
-  addWatchlistPool,
+  updateUserFarmsViewMode,
   updateUserPoolStakedOnly,
   updateUserPoolsViewMode,
-  ViewMode,
-  updateUserFarmsViewMode,
-  updateUserPredictionChartDisclaimerShow,
   updateUserPredictionAcceptedRisk,
+  updateUserPredictionChartDisclaimerShow,
+  updateUserSingleHopOnly,
+  updateUserSlippageTolerance,
   updateUserUsernameVisibility,
-  updateUserExpertModeAcknowledgementShow,
 } from '../actions'
-import { deserializeToken, GAS_PRICE_GWEI, serializeToken } from './helpers'
+import { GAS_PRICE_GWEI, deserializeToken, serializeToken } from './helpers'
+import { useCallback, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
+import flatMap from 'lodash/flatMap'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAllTokens } from 'hooks/Tokens'
 
 export function useAudioModeManager(): [boolean, () => void] {
   const dispatch = useDispatch<AppDispatch>()
@@ -49,6 +52,18 @@ export function useAudioModeManager(): [boolean, () => void] {
   return [audioPlay, toggleSetAudioMode]
 }
 
+
+
+export function useAutoSlippageManager(): [boolean, () => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const useAutoSlippage = useSelector<AppState, AppState['user']['useAutoSlippage']>((state) => state.user.useAutoSlippage)
+
+  const toggleSetAudioMode = useCallback(() => {
+    dispatch(updateUserAutoSlippage({useAutoSlippage: !useAutoSlippage}))
+  }, [useAutoSlippage, dispatch])
+
+  return [useAutoSlippage, toggleSetAudioMode]
+}
 export function useIsExpertMode(): boolean {
   return useSelector<AppState, AppState['user']['userExpertMode']>((state) => state.user.userExpertMode)
 }

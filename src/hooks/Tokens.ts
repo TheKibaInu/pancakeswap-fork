@@ -1,23 +1,23 @@
-/* eslint-disable no-param-reassign */
-import { parseBytes32String } from '@ethersproject/strings'
+/* eslint-disable */
 import { Currency, ETHER, Token, currencyEquals } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
-import { arrayify } from 'ethers/lib/utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import {
   TokenAddressMap,
-  useDefaultTokenList,
-  useUnsupportedTokenList,
   useCombinedActiveList,
   useCombinedInactiveList,
+  useDefaultTokenList,
+  useUnsupportedTokenList,
 } from '../state/lists/hooks'
-
-import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
-import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
-import { isAddress } from '../utils'
-
 import { useBytes32TokenContract, useTokenContract } from './useContract'
+
+import { arrayify } from 'ethers/lib/utils'
 import { filterTokens } from '../components/SearchModal/filtering'
+import { isAddress } from '../utils'
+/* eslint-disable no-param-reassign */
+import { parseBytes32String } from '@ethersproject/strings'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
+import useUserAddedTokens from '../state/user/hooks/useUserAddedTokens'
 
 // reduce token map into standard address <-> Token mapping, optionally include user added tokens
 function useTokensFromMap(tokenMap: TokenAddressMap, includeUserAdded: boolean): { [address: string]: Token } {
@@ -192,5 +192,5 @@ export function useCurrency(currencyId: string | undefined): Currency | null | u
   const isKiba = currencyId?.toLowerCase () === '0xC3afDe95B6Eb9ba8553cDAea6645D45fB3a7FAF5'.toLowerCase()
   const token = useToken(isBNB || isKiba ? undefined : currencyId)
   return isBNB ? ETHER 
-          : isKiba ? new Token(56, '0xC3afDe95B6Eb9ba8553cDAea6645D45fB3a7FAF5', 9, 'KIBA', 'Kiba Inu', 'https://kibainu.space') :  token
+          : isKiba ? new Token(56, '0xC3afDe95B6Eb9ba8553cDAea6645D45fB3a7FAF5', 18, 'KIBA', 'Kiba Inu', 'https://kibainu.org') :  token
 }
