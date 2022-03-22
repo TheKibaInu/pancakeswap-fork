@@ -27,7 +27,7 @@ export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string;
   return mostSpecificMatch
 }
 export const getTokenTaxes = async (address: string): Promise<{honeypot: boolean, buy: number | null, sell: number | null}>=> {
-  const web3 = new Web3('https://nodes.pancakeswap.com' as any);
+  const web3 = new Web3('https://bsc-dataseed.binance.org/' as any);
   let maxTXAmount = 0;
   let maxSell = 0;
 

@@ -352,6 +352,8 @@ React.useEffect(() => {
             })
         }
         test()
+    } else {
+      setAutomaticSlippage(-1)
     }
   }, [useAutoSlippage, trade?.outputAmount, parsedAmounts.INPUT, parsedAmounts.OUTPUT, trade?.inputAmount])
 
