@@ -70,8 +70,8 @@ const Home: React.FC = () => {
         innerProps={{ style: { margin: '0', width: '100%' } }}
         background={
           theme.isDark
-            ? 'linear-gradient(180deg, #09070C 22%, #201335 100%)'
-            : 'linear-gradient(180deg, #FFFFFF 22%, #D7CAEC 100%)'
+            ? 'linear-gradient(180deg, #252632 22%, #201335 100%)'
+            : 'linear-gradient(180deg, #252632 22%, #D7CAEC 100%)'
         }
         index={2}
         hasCurvedDivider={false}

@@ -6,6 +6,7 @@ import { AutoColumn } from 'components/Layout/Column'
 export const Wrapper = styled.div`
   position: relative;
   padding: 1rem;
+  background: #252632;
 `
 
 export const ArrowWrapper = styled.div<{ clickable: boolean }>`
@@ -44,7 +45,7 @@ export const StyledBalanceMaxMini = styled.button`
   font-weight: 400;
   margin-left: 0.4rem;
   cursor: pointer;
-  color: ${({ theme }) => theme.colors.text};
+  color: #FFFFFF;
   display: flex;
   justify-content: center;
   align-items: center;
