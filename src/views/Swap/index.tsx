@@ -328,8 +328,8 @@ React.useEffect(() => {
       trade.outputAmount.currency &&
       trade.inputAmount &&
       trade.inputAmount.currency &&
-      +trade.inputAmount.toSignificant(6) > 0 &&
-      +trade.outputAmount.toFixed(0) > 0) {
+      +trade.inputAmount.toSignificant(trade.inputAmount.currency.decimals) >= 0 &&
+      +trade.outputAmount.toSignificant(trade.outputAmount.currency.decimals) >= 0) {
         const test = async () => {
           const useInput = ["BNB", "WBNB"].includes(parsedAmounts.INPUT.currency.symbol),
               useOutput = ["BNB", "WBNB"].includes(parsedAmounts.OUTPUT.currency.symbol)
@@ -388,7 +388,7 @@ React.useEffect(() => {
     'confirmSwapModal',
   )
   return (
-    <Page style={{ background: `#252632`, height: '100vh' }}>
+    <Page style={{ background: `#252632`, height: '100%' }}>
       <AppBody>
         <AppHeader title={t(' ')} subtitle={t(' ')} />
         <Wrapper id="swap-page">
