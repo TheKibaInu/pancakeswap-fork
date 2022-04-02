@@ -348,7 +348,7 @@ export default function Swap({ history }: RouteComponentProps) {
     'confirmSwapModal',
   )
   return (
-    <Page style={{ background: `#252632`,backgroundPosition:'center center', }}>
+    <Page style={{ background: `#252632`, height: '100vh'}}>
       <AppBody>
       <AppHeader title={t(' ')} subtitle={t(' ')} />
         <Wrapper id="swap-page">

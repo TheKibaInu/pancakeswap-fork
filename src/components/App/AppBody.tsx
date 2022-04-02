@@ -4,10 +4,10 @@ import { Card } from '@pancakeswap/uikit'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 0px;
-  max-width: '100%';
   width: 100%;
   background: #252632;
   z-index: 1;
+  display: flex;
 `
 
 /**
