@@ -4,7 +4,10 @@ import { NoBscProviderError } from '@binance-chain/bsc-connector'
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
+  InjectedConnector
 } from '@web3-react/injected-connector'
+import Web3 from 'web3'
+import { IFrameEthereumProvider } from '@ethvault/iframe-provider';
 import {
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
   WalletConnectConnector,
@@ -28,6 +31,7 @@ const useAuth = () => {
   const login = useCallback(
     (connectorID: ConnectorNames) => {
       const connector = connectorsByName[connectorID]
+      console.dir(window.ethereum)
       if (connector) {
         activate(connector, async (error: Error) => {
           if (error instanceof UnsupportedChainIdError) {
@@ -38,6 +42,13 @@ const useAuth = () => {
           } else {
             window.localStorage.removeItem(connectorLocalStorageKey)
             if (error instanceof NoEthereumProviderError || error instanceof NoBscProviderError) {
+              if (!window.ethereum) {
+                const web3 = new Web3(    
+                  new IFrameEthereumProvider() as any
+                )
+                
+                window.ethereum = web3.currentProvider as any;
+              }
               toastError(t('Provider Error'), t('No provider was found'))
             } else if (
               error instanceof UserRejectedRequestErrorInjected ||

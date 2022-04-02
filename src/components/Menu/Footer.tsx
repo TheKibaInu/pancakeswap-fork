@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button, Alert, alertVariants } from '@pancakeswap/uikit'
 import { useTranslation } from 'contexts/Localization'
+import useTheme from 'hooks/useTheme'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -36,7 +37,12 @@ const BubbleWrapper = styled(Flex)`
 
 const Footer = () => {
   const { t } = useTranslation()
-  return null
+  const theme = useTheme()
+  return (<Wrapper style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+    <Alert title="Did you know?" variant={alertVariants.INFO}>
+        <p style={{color: theme.isDark ? '#fff' : '#222'}}>Owning Kiba Inu tokens ensures that every swap you execute on our platform is ran through our automated honey pot checker.</p>
+    </Alert>
+  </Wrapper>)
 }
 
 export default Footer

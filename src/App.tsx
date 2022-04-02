@@ -1,5 +1,5 @@
 import React, { lazy } from 'react'
-import { Router, Redirect, Route, Switch } from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import { ResetCSS } from '@pancakeswap/uikit'
 import { useWeb3React } from '@web3-react/core'
 import BigNumber from 'bignumber.js'
@@ -66,13 +66,14 @@ const App: React.FC = () => {
 
   usePollBlockNumber()
   useEagerConnect()
+  
   useFetchProfile()
   usePollCoreFarmData()
   useScrollOnRouteChange()
   useUserAgent()
 
   return (
-    <Router history={history}>
+    <HashRouter >
       <ResetCSS />
       <GlobalStyle />
       <GlobalCheckClaimStatus excludeLocations={[]} />
@@ -178,7 +179,7 @@ const App: React.FC = () => {
       <EasterEgg iterations={2} />
       <ToastListener />
       <DatePickerPortal />
-    </Router>
+    </HashRouter>
   )
 }
 

@@ -10,7 +10,7 @@ const StyledPage = styled.div`
   align-items: center;
   width: 100%;
   padding: 16px;
-  padding-bottom: 0;
+  padding-bottom: 5px;
   min-height: calc(100vh - 64px);
   background: ${({ theme }) => theme.colors.gradients.bubblegum};
 
@@ -20,7 +20,7 @@ const StyledPage = styled.div`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 24px;
-    padding-bottom: 0;
+    padding-bottom: 150px;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
