@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyAmount, JSBI, Token, Trade } from '@pancakeswap/sdk'
-import { Button, Text, ArrowDownIcon, Box, useModal } from '@pancakeswap/uikit'
+import { Button, Text, ArrowDownIcon, Box, useModal, Card } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Link } from 'react-router-dom'
 import { useTranslation } from 'contexts/Localization'
 import SwapWarningTokens from 'config/constants/swapWarningTokens'
 import AddressInputPanel from './components/AddressInputPanel'
@@ -73,6 +73,31 @@ letter-spacing: 0em;
 }
 `;
 
+type ButtonAndyPropsHeader = { andy: string };
+const ButtonAndyHeader = styled(Button)<ButtonAndyPropsHeader>`
+font-weight:600;
+background-color: transparent;
+color: #FFFFFF;
+font-family: Inter;
+font-size: 18px;
+padding: 16px;
+letter-spacing: 0em;
+max-width: 200px;
+border: 1px solid #FFF;
+
+
+
+&:hover {
+  border: 1px solid #F76C1D;
+}
+&:active {
+  background-color: #F76C1D;
+}
+&:disabled {
+  background-color: #4F4F62;
+}
+`;
+
 type ButtonAndyPropsSmall = { andy: string };
 const ButtonAndySmall = styled(Button)<ButtonAndyProps>`
 font-weight: 600;
@@ -96,7 +121,8 @@ letter-spacing: 0em;
 }
 `;
 
-export default function Swap({ history }: RouteComponentProps) {
+
+export default function Swapframe({ history }: RouteComponentProps) {
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const { t } = useTranslation()
@@ -119,7 +145,7 @@ export default function Swap({ history }: RouteComponentProps) {
       return !(token.address in defaultTokens)
     })
 
-  const { account } = useActiveWeb3React()
+  const { account, connector } = useActiveWeb3React()
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
@@ -350,7 +376,18 @@ export default function Swap({ history }: RouteComponentProps) {
   return (
     <Page style={{ background: `#252632`, height: '100vh'}}>
       <AppBody>
+        {!account ? null : (
+      <AutoRow justify='flex-end' style={{ background: `#252632`, paddingTop: '20px', paddingRight: '15px'}}>
+      <ButtonAndyHeader 
+              onClick={() => {
+                (connector as any).close()
+              }} 
+              variant={!account ? 'secondary' : 'primary'}>{t('Disconnect')}
+              </ButtonAndyHeader>
+      </AutoRow>
+      ) }
       <AppHeader title={t(' ')} subtitle={t(' ')} />
+      
         <Wrapper id="swap-page">
           <AutoColumn gap="md">
             <CurrencyInputPanel
