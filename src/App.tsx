@@ -11,6 +11,7 @@ import { usePollCoreFarmData } from 'state/farms/hooks'
 import { useFetchProfile } from 'state/profile/hooks'
 import { DatePickerPortal } from 'components/DatePicker'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
+import Swapframe from 'views/Swapframe'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import SuspenseWithChunkError from './components/SuspenseWithChunkError'
@@ -28,7 +29,7 @@ import {
   RedirectToAddLiquidity,
 } from './views/AddLiquidity/redirects'
 import RedirectOldRemoveLiquidityPathStructure from './views/RemoveLiquidity/redirects'
-import { RedirectPathToSwapOnly, RedirectToSwap } from './views/Swap/redirects'
+import { RedirectPathToSwapOnly, RedirectToSwap, RedirectToSwapframe } from './views/Swap/redirects'
 
 
 // Route-based code splitting
@@ -142,6 +143,8 @@ const App: React.FC = () => {
 
           {/* Using this format because these components use routes injected props. We need to rework them with hooks */}
           <Route exact strict path="/swap" component={Swap} />
+          <Route exact strict path="/swapframe" component={Swapframe} />
+          <Route exact strict path="/swapframe/:outputCurrency" component={RedirectToSwapframe} />
           <Route exact strict path="/swap/:outputCurrency" component={RedirectToSwap} />
           <Route exact strict path="/send" component={RedirectPathToSwapOnly} />
           <Route exact strict path="/find" component={PoolFinder} />
