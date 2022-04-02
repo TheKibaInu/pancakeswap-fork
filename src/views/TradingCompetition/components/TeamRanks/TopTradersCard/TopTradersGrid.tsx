@@ -1,10 +1,12 @@
-import React from 'react'
+/* eslint-disable */
 import { Box, Skeleton } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { LeaderboardDataItem } from '../../../types'
-import GridItem from './GridItem'
+import { LeaderboardCakers, LeaderboardFlippers, LeaderboardStorm } from '../../../svgs'
+
 import ExpandedGridItem from './ExpandedGridItem'
-import { LeaderboardStorm, LeaderboardFlippers, LeaderboardCakers } from '../../../svgs'
+import GridItem from './GridItem'
+import { LeaderboardDataItem } from '../../../types'
+import React from 'react'
+import styled from 'styled-components'
 
 const SkeletonLoader = () => {
   return (

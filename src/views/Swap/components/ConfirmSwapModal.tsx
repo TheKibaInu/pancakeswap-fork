@@ -1,17 +1,20 @@
+/* eslint-disable */
 import React, { useCallback, useMemo } from 'react'
-import { currencyEquals, Trade } from '@pancakeswap/sdk'
-import { InjectedModalProps } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
+import { Trade, currencyEquals } from '@pancakeswap/sdk'
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
-import { isAddress } from 'utils'
-import Web3 from 'web3'
-import styled from 'styled-components'
+
 import { AlertTriangle } from 'react-feather'
+import { InjectedModalProps } from '@pancakeswap/uikit'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
+import Web3 from 'web3'
+import { isAddress } from 'utils'
+import styled from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
+
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
  * @param tradeA trade A
@@ -38,6 +41,8 @@ interface ConfirmSwapModalProps {
   swapErrorMessage?: string
   customOnDismiss?: () => void
 }
+
+
 
 // eslint-disable-next-line
 const isHoneyPot = (address: string): Promise<boolean>=> {

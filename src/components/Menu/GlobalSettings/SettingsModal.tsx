@@ -1,19 +1,22 @@
+/* eslint-disable */
+import { Flex, InjectedModalProps, Modal, PancakeToggle, Text, ThemeSwitcher, Toggle } from '@pancakeswap/uikit'
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher } from '@pancakeswap/uikit'
 import {
   useAudioModeManager,
+  useAutoSlippageManager,
   useExpertModeManager,
   useUserExpertModeAcknowledgementShow,
   useUserSingleHopOnly,
 } from 'state/user/hooks'
-import { useTranslation } from 'contexts/Localization'
-import { useSwapActionHandlers } from 'state/swap/hooks'
-import useTheme from 'hooks/useTheme'
-import QuestionHelper from '../../QuestionHelper'
-import TransactionSettings from './TransactionSettings'
+
 import ExpertModal from './ExpertModal'
 import GasSettings from './GasSettings'
+import QuestionHelper from '../../QuestionHelper'
+import TransactionSettings from './TransactionSettings'
+import styled from 'styled-components'
+import { useSwapActionHandlers } from 'state/swap/hooks'
+import useTheme from 'hooks/useTheme'
+import { useTranslation } from 'contexts/Localization'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -29,6 +32,7 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
+  const [useAutoSlippage, setUseAutoSlippage ] = useAutoSlippageManager()
   const { onChangeRecipient } = useSwapActionHandlers()
 
   const { t } = useTranslation()
@@ -115,6 +119,17 @@ const SettingsModal: React.FC<InjectedModalProps> = ({ onDismiss }) => {
             />
           </Flex>
           <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
+        </Flex>
+        <Flex style={{marginTop:15}} justifyContent="space-between" alignItems="center">
+          <Flex alignItems="center">
+            <Text>{t('Auto Slippage')}</Text>
+            <QuestionHelper
+              text={t('Automatically calculate the lowest slippage for your trades based on the tokens your trading and their smart contract taxes')}
+              placement="top-start"
+              ml="4px"
+            />
+          </Flex>
+          <Toggle id="toggle-use-auto-slippage-mode-button" scale="md" checked={useAutoSlippage} onChange={setUseAutoSlippage} />
         </Flex>
       </ScrollableContainer>
     </Modal>
