@@ -23,7 +23,7 @@
       "symbol": "KIBA",
       "address": "0xC3afDe95B6Eb9ba8553cDAea6645D45fB3a7FAF5",
       "chainId": 56,
-      "decimals": 9,
+      "decimals": 18,
       "logoURI": "https://assets.trustwalletapp.com/blockchains/smartchain/assets/0xC3afDe95B6Eb9ba8553cDAea6645D45fB3a7FAF5/logo.png"
     }
    
